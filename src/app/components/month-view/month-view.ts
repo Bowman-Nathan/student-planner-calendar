@@ -26,6 +26,9 @@ export class MonthView implements OnChanges {
   //Sends the clicked day back to the parent calendar page
   @Output() dateSelected = new EventEmitter<Date>();
 
+  //Sends the clicked event back to the parent calendar page for editing
+  @Output() editEventClicked = new EventEmitter<CalendarEvent>();
+
   //Sends all calendar cells displayed in the month grid
   calendarDays: Date[] = [];
 

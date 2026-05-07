@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CalendarEvent } from '../../models/calendar-event';
 import { FirebaseService } from '../../services/firebase';
@@ -12,6 +12,8 @@ import { FirebaseService } from '../../services/firebase';
 export class EventTooltip {
 
   @Input() event?: CalendarEvent;
+
+  @Output() editClicked = new EventEmitter<CalendarEvent>();
 
   constructor(private firebaseService: FirebaseService) {}
 
@@ -29,5 +31,15 @@ export class EventTooltip {
 
     location.reload();
   }
+
+
+  editEvent(): void {
+
+  if (!this.event) {
+    return;
+  }
+
+  this.editClicked.emit(this.event);
+}
 
 }

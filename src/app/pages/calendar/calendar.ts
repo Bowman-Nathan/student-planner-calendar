@@ -29,6 +29,9 @@ export class Calendar implements OnInit {
 
   events: CalendarEvent[] =[];
 
+  // Stores the event currently being edited
+  editingEvent?: CalendarEvent;
+
   //temperature used from the weatherservice component
   temp: number | null = null;
 
@@ -101,6 +104,16 @@ async ngOnInit(): Promise<void> {
     this.showEventForm = true;
   }
 
+  // Opens the edit form and populates it with the selected event's data
+  openEditForm(event: CalendarEvent): void {
+
+  this.editingEvent = event;
+
+  this.selectedDate = new Date(event.date);
+
+  this.showEventForm = true;
+}
+
   // Hides the add event
   closeEventForm(): void {
     this.showEventForm = false;
@@ -121,12 +134,36 @@ async addEvent(newEvent: CalendarEvent): Promise<void> {
     userId: currentUser.uid
   };
 
-  await this.firebaseService.saveEvent(eventWithUser);
+  // EDIT EXISTING EVENT
+  if (eventWithUser.id) {
 
-  this.events.push(eventWithUser);
+    await this.firebaseService.updateEvent(
+      eventWithUser.id,
+      eventWithUser
+    );
+
+    // Update local UI array
+    const index = this.events.findIndex(
+      event => event.id === eventWithUser.id
+    );
+
+    if (index !== -1) {
+      this.events[index] = eventWithUser;
+    }
+
+  }
+
+  // CREATE NEW EVENT
+  else {
+
+    await this.firebaseService.saveEvent(eventWithUser);
+
+    this.events.push(eventWithUser);
+  }
 
   this.showEventForm = false;
 
+  this.editingEvent = undefined;
 }
 
 }

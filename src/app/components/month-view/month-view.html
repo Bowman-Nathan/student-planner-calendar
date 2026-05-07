@@ -35,4 +35,9 @@
   </div>
 </div>
 
-<app-event-tooltip *ngIf="showTooltip" [event]="selectedEvent"> </app-event-tooltip>
+<app-event-tooltip
+  *ngIf="showTooltip"
+  [event]="selectedEvent"
+  (editClicked)="editEventClicked.emit($event)"
+>
+</app-event-tooltip>

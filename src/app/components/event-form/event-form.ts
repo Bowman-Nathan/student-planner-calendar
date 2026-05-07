@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CalendarEvent } from '../../models/calendar-event';
@@ -12,10 +12,13 @@ import { CalendarEvent } from '../../models/calendar-event';
   styleUrl: './event-form.css'
 })
 
-export class EventForm {
+export class EventForm implements OnChanges {
 
   //Recieves the selected date from the parent calendar page
   @Input() selectedDate!: Date;
+
+  //Recieves the event being edited from the parent calendar page (if applicable)
+  @Input() editingEvent?: CalendarEvent;
 
   //Sends a cancel message back to the parent page
   @Output() cancelForm = new EventEmitter<void>();
@@ -74,6 +77,9 @@ export class EventForm {
   //Temp saving point for test
   saveEvent(): void {
       const newEvent: CalendarEvent = {
+
+        id: this.editingEvent?.id,
+        
         title: this.title, 
         date: this.selectedDate.toDateString(),
         startTime: this.startTime,
@@ -88,6 +94,20 @@ export class EventForm {
   cancel(): void{
     this.cancelForm.emit();
   }
+
+  ngOnChanges(): void {
+
+  if (this.editingEvent) {
+
+    this.title = this.editingEvent.title;
+    this.startTime = this.editingEvent.startTime;
+    this.endTime = this.editingEvent.endTime;
+    this.color = this.editingEvent.color;
+    this.details = this.editingEvent.details;
+
+  }
+
+}
 
   
 
