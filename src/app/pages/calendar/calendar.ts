@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MonthView } from '../../components/month-view/month-view';
 import { EventForm } from '../../components/event-form/event-form';
 import { CalendarEvent } from '../../models/calendar-event';
+import { Weather } from '../../weather';
 
 
 @Component({
@@ -28,9 +29,13 @@ export class Calendar implements OnInit {
 
   events: CalendarEvent[] =[];
 
+  //temperature used from the weatherservice component
+  temp: number | null = null;
+
   constructor(
     public firebaseService: FirebaseService,
-    private router:  Router
+    private router:  Router,
+    private weatherService: Weather
   ) {}
 
 async ngOnInit(): Promise<void> {
@@ -44,6 +49,10 @@ async ngOnInit(): Promise<void> {
       this.events = await this.firebaseService.getUserEvents(
         currentUser.uid
       );
+
+      this.weatherService.getTemperature().subscribe(temp => {
+        this.temp = temp;
+      })
 
       clearInterval(waitForUser);
     }
