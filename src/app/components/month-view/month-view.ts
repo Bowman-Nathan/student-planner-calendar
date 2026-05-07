@@ -102,14 +102,24 @@ export class MonthView implements OnChanges {
   showTooltip = false;
 
   // Opens selected event
-  openEvent(event: CalendarEvent, mouseEvent: MouseEvent): void {
+openEvent(event: CalendarEvent, mouseEvent: MouseEvent): void {
 
-    // Prevents clicking event from also selecting the day cell
-    mouseEvent.stopPropagation();
+  // Prevents clicking event from also selecting the day cell
+  mouseEvent.stopPropagation();
 
-    this.selectedEvent = event;
-    this.showTooltip = true;
+  // If clicking the same selected event → deselect it
+  if (this.selectedEvent === event) {
+
+    this.selectedEvent = undefined;
+    this.showTooltip = false;
+
+    return;
   }
+
+  // Otherwise select new event
+  this.selectedEvent = event;
+  this.showTooltip = true;
+}
 
 }
 
