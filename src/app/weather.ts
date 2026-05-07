@@ -12,10 +12,9 @@ export class Weather {
 
   private apiKey = environment.openWeatherApiKey;
 
+  private url = `https://api.openweathermap.org/data/2.5/weather?q=Fargo,US&units=imperial&appid=${this.apiKey}`;
 
-  private url = 'https://api.openweathermap.org/data/2.5/weather?q=Fargo,US&units=imperial&appid=${this.apiKey}';
-
-  constructor(private http:HttpClient) {}
+  constructor(private http: HttpClient) {}
 
   getTemperature(): Observable<number> {
     return this.http.get<any>(this.url).pipe(
