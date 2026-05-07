@@ -40,6 +40,15 @@ export class Calendar implements OnInit {
 
 async ngOnInit(): Promise<void> {
 
+  this.weatherService.getTemperature().subscribe({
+      next: temp => {
+        this.temp = temp;
+      },
+      error: err => {
+        console.error('Weather API failed:', err);
+      }
+    });
+
   const waitForUser = setInterval(async () => {
 
     const currentUser = this.firebaseService.currentUser;
@@ -49,10 +58,6 @@ async ngOnInit(): Promise<void> {
       this.events = await this.firebaseService.getUserEvents(
         currentUser.uid
       );
-
-      this.weatherService.getTemperature().subscribe(temp => {
-        this.temp = temp;
-      })
 
       clearInterval(waitForUser);
     }
