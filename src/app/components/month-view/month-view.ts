@@ -26,6 +26,9 @@ export class MonthView implements OnChanges {
   //Sends the clicked day back to the parent calendar page
   @Output() dateSelected = new EventEmitter<Date>();
 
+  //Sends the clicked event back to the parent calendar page for editing
+  @Output() editEventClicked = new EventEmitter<CalendarEvent>();
+
   //Sends all calendar cells displayed in the month grid
   calendarDays: Date[] = [];
 
@@ -99,14 +102,24 @@ export class MonthView implements OnChanges {
   showTooltip = false;
 
   // Opens selected event
-  openEvent(event: CalendarEvent, mouseEvent: MouseEvent): void {
+openEvent(event: CalendarEvent, mouseEvent: MouseEvent): void {
 
-    // Prevents clicking event from also selecting the day cell
-    mouseEvent.stopPropagation();
+  // Prevents clicking event from also selecting the day cell
+  mouseEvent.stopPropagation();
 
-    this.selectedEvent = event;
-    this.showTooltip = true;
+  // If clicking the same selected event → deselect it
+  if (this.selectedEvent === event) {
+
+    this.selectedEvent = undefined;
+    this.showTooltip = false;
+
+    return;
   }
+
+  // Otherwise select new event
+  this.selectedEvent = event;
+  this.showTooltip = true;
+}
 
 }
 

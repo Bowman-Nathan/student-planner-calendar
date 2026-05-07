@@ -36,6 +36,7 @@
         [selectedDate]="selectedDate"
         [events]="events"
         (dateSelected)="onDateSelected($event)"
+        (editEventClicked)="openEditForm($event)"
       >
       </app-month-view>
     </div>
@@ -53,6 +54,7 @@
         <div class="mt-3" *ngIf="showEventForm">
           <app-event-form
             [selectedDate]="selectedDate"
+            [editingEvent]="editingEvent"
             (cancelForm)="closeEventForm()"
             (saveNewEvent)="addEvent($event)"
           ></app-event-form>
