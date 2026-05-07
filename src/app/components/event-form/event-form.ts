@@ -57,7 +57,7 @@ export class EventForm {
   ];
 
   colorOptions: string[] = [
-    'blue',
+    'yellow',
     'green',
     'red',
     'purple',

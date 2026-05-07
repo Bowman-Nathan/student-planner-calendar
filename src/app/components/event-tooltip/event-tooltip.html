@@ -1,1 +1,11 @@
-<p>event-tooltip works!</p>
+<!-- <p>event-tooltip works!</p> -->
+
+<div class="card p-3 shadow">
+  <h5>{{ event?.title }}</h5>
+
+  <p>{{ event?.startTime }} - {{ event?.endTime }}</p>
+
+  <p>{{ event?.details }}</p>
+
+  <button class="btn btn-danger" (click)="deleteEvent()">Delete Event</button>
+</div>

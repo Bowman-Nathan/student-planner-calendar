@@ -26,9 +26,13 @@
         class="event-preview"
         *ngFor="let event of getEventsForDay(day)"
         [style.backgroundColor]="event.color"
+        (click)="openEvent(event, $event)"
+        [class.selected-event]="selectedEvent === event"
       >
         {{ event.title }}
       </div>
     </div>
   </div>
 </div>
+
+<app-event-tooltip *ngIf="showTooltip" [event]="selectedEvent"> </app-event-tooltip>
