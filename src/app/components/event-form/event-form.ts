@@ -76,17 +76,18 @@ export class EventForm implements OnChanges {
 
   //Temp saving point for test
   saveEvent(): void {
-      const newEvent: CalendarEvent = {
+    console.log(this.editingEvent);
+    const newEvent: CalendarEvent = {
 
-        id: this.editingEvent?.id,
-        
-        title: this.title, 
-        date: this.selectedDate.toDateString(),
-        startTime: this.startTime,
-        endTime: this.endTime,
-        color: this.color,
-        details: this.details
-      };
+      ...(this.editingEvent?.id && { id: this.editingEvent.id }),
+
+      title: this.title,
+      date: this.selectedDate.toDateString(),
+      startTime: this.startTime,
+      endTime: this.endTime,
+      color: this.color,
+      details: this.details
+    };
     this.saveNewEvent.emit(newEvent);
 
   }

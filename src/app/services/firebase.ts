@@ -45,11 +45,15 @@ export class FirebaseService {
     await signOut(this.auth);
   }
 
-  async saveEvent(eventData: any): Promise<void> {
-    await addDoc(
+  //Saves a new event to the database and returns the new document's ID
+  async saveEvent(eventData: any): Promise<string> {
+
+    const docRef = await addDoc(
       collection(this.firestore, 'events'),
       eventData
     );
+
+    return docRef.id;
   }
 
   // Loads all events belonging to the currently logged in user

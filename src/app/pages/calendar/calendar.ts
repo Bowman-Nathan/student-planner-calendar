@@ -100,10 +100,13 @@ async ngOnInit(): Promise<void> {
   }
 
   // Shows the add event 
-  openEventForm(): void{
-    this.showEventForm = true;
-  }
+openEventForm(): void{
 
+  // Clears edit mode
+  this.editingEvent = undefined;
+
+  this.showEventForm = true;
+}
   // Opens the edit form and populates it with the selected event's data
   openEditForm(event: CalendarEvent): void {
 
@@ -119,7 +122,7 @@ async ngOnInit(): Promise<void> {
     this.showEventForm = false;
   }
 
-  // Saves a newly created event into Firestore and updates the UI
+ 
 // Saves a newly created event into Firebase and updates the calendar UI
 async addEvent(newEvent: CalendarEvent): Promise<void> {
 
@@ -142,7 +145,6 @@ async addEvent(newEvent: CalendarEvent): Promise<void> {
       eventWithUser
     );
 
-    // Update local UI array
     const index = this.events.findIndex(
       event => event.id === eventWithUser.id
     );
@@ -156,7 +158,11 @@ async addEvent(newEvent: CalendarEvent): Promise<void> {
   // CREATE NEW EVENT
   else {
 
-    await this.firebaseService.saveEvent(eventWithUser);
+    const newId = await this.firebaseService.saveEvent(
+      eventWithUser
+    );
+
+    eventWithUser.id = newId;
 
     this.events.push(eventWithUser);
   }
