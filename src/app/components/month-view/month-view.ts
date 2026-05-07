@@ -1,11 +1,12 @@
 import { Component, Input, Output, EventEmitter, OnChanges, input } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { CalendarEvent } from '../../models/calendar-event';
+import { EventTooltip } from '../event-tooltip/event-tooltip';
 
 
 @Component({
   selector: 'app-month-view',
-  imports: [CommonModule],
+  imports: [CommonModule, EventTooltip],
 
   templateUrl: './month-view.html',
   styleUrl: './month-view.css'
@@ -91,4 +92,21 @@ export class MonthView implements OnChanges {
     );
   }
 
+  // Stores the currently selected event
+  selectedEvent?: CalendarEvent;
+
+  // Controls whether tooltip/popup is visible
+  showTooltip = false;
+
+  // Opens selected event
+  openEvent(event: CalendarEvent, mouseEvent: MouseEvent): void {
+
+    // Prevents clicking event from also selecting the day cell
+    mouseEvent.stopPropagation();
+
+    this.selectedEvent = event;
+    this.showTooltip = true;
+  }
+
 }
+

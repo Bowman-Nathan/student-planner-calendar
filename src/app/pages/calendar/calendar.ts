@@ -33,17 +33,24 @@ export class Calendar implements OnInit {
     private router:  Router
   ) {}
 
-  async ngOnInit(): Promise<void> {
+async ngOnInit(): Promise<void> {
+
+  const waitForUser = setInterval(async () => {
+
     const currentUser = this.firebaseService.currentUser;
 
-    if(!currentUser) {
-      return;
+    if (currentUser) {
+
+      this.events = await this.firebaseService.getUserEvents(
+        currentUser.uid
+      );
+
+      clearInterval(waitForUser);
     }
 
-    this.events = await this.firebaseService.getUserEvents(
-      currentUser.uid
-    );
-  }
+  }, 500);
+
+}
 
   //moves the calendar back one month
   previousMonth(): void{

@@ -4,7 +4,7 @@ import { getAuth } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
 import { getFirestore } from 'firebase/firestore';
 import { onAuthStateChanged, User, signOut } from 'firebase/auth'; //allows for the user to logout of account/tracks state of user (signed in/signed out)
-import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, where, deleteDoc, doc } from 'firebase/firestore';
 
 
 //stores the Firebase connection info
@@ -68,5 +68,14 @@ async getUserEvents(userId: string): Promise<any[]> {
   }));
 
 }
+
+async deleteEvent(eventId: string): Promise<void> {
+
+  await deleteDoc(
+    doc(this.firestore, 'events', eventId)
+  );
+
+}
+
 
 }
